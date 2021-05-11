@@ -1,6 +1,6 @@
 %转轴法向量为 N =（u,v,w)
 %转轴的位置为 O =（a,b,c)
-%转角为 theta，单位为°
+%转角为 theta，单位为弧度
 function y = transfM(u,v,w,theta,a,b,c)
 
     r11 = u^2 + (v^2 + w^2) * cos(theta);
