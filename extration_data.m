@@ -26,8 +26,8 @@ for j = 1:num
 end
 
 for h = 1:num
-    eval(['circle',num2str(h),' = ','circle_2(:,:,h)',';']);
-    str1 = ['circle',num2str(h),'.txt'];
-    str2 = ['circle',num2str(h)];
+    eval(['circle1_',num2str(h),' = ','circle_2(:,:,h)',';']);
+    str1 = ['circle1_',num2str(h),'.txt'];
+    str2 = ['circle1_',num2str(h)];
     dlmwrite(str1,eval(str2),'delimiter',',','precision','%.6f');
 end
