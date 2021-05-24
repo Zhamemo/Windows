@@ -16,14 +16,18 @@ wp = zeros(num,4);
 wp(:,1:2) = cameraParams.WorldPoints(1:num,:);
 wp(:,4) = 1;
 
-for j = 1:Arsize
-    circle_1(:,:,j) = zeros(8,4);
-    circle_2(:,:,j) = zeros(8,3);
-    for k = 1:num
-        circle_1(k,:,j) = ams_1(:,:,j) * wp(k,:)';
+for j = 1:num
+    circle_1(:,:,j) = zeros(Arsize,4);
+    circle_2(:,:,j) = zeros(Arsize,3);
+    for k = 1:Arsize
+        circle_1(k,:,j) = ams_1(:,:,k) * wp(j,:)';
         circle_2(k,:,j) = circle_1(k,1:3,j);
     end
-    str1 = ['circle1_',num2str(j),'.txt'];
-    str2 = ['circle1_',num2str(j)];
-    dlmwrite(str1,circle_2(:,:,j),'delimiter',',','precision','%.6f');
+end
+
+for h = 1:num
+    eval(['circle1_',num2str(h),' = ','circle_2(:,:,h)',';']);
+    str1 = ['circle1_',num2str(h),'.txt'];
+    str2 = ['circle1_',num2str(h)];
+    dlmwrite(str1,eval(str2),'delimiter',',','precision','%.6f');
 end
