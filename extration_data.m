@@ -24,6 +24,5 @@ for j = 1:Arsize
         circle_2(k,:,j) = circle_1(k,1:3,j);
     end
     str1 = ['circle1_',num2str(j),'.txt'];
-    str2 = ['circle1_',num2str(j)];
     dlmwrite(str1,circle_2(:,:,j),'delimiter',',','precision','%.6f');
 end
