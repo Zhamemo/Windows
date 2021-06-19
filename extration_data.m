@@ -4,6 +4,8 @@ Ro = cameraParams.RotationMatrices;
 Tr = cameraParams.TranslationVectors;
 Arsize = size(Tr,1);
 ams_1(:,:,Arsize) = zeros(4,4);
+
+%%齐次化归一
 for i = 1 : Arsize
     b_1 = ones(4,1);
     b_1(1:3,:) = Tr(i,:)';
@@ -11,6 +13,7 @@ for i = 1 : Arsize
     ams_1(:,4,i) =  b_1;
 end
 
+%%生成世界坐标
 num  = 8;
 wp = zeros(num,4);
 wp(:,1:2) = cameraParams.WorldPoints(1:num,:);
@@ -23,6 +26,14 @@ for j = 1:Arsize
         circle_1(k,:,j) = ams_1(:,:,j) * wp(k,:)';
         circle_2(k,:,j) = circle_1(k,1:3,j);
     end
-    str1 = ['circle1_',num2str(j),'.txt'];
-    dlmwrite(str1,circle_2(:,:,j),'delimiter',',','precision','%.6f');
+%     str1 = ['circle1_',num2str(j),'.txt'];
+%     dlmwrite(str1,circle_2(:,:,j),'delimiter',',','precision','%.6f');
+end
+for h = 1:num
+    circle(:,:,h) = zeros(Arsize,3);
+    for t = 1:Arsize
+        circle(t,:,h) = circle_2(h,:,t);
+    end
+    str1 = ['circle1_',num2str(h),'.txt'];
+    dlmwrite(str1,circle(:,:,h),'delimiter',',','precision','%.4f');
 end
