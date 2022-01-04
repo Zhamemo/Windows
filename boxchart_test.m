@@ -1,12 +1,36 @@
 clear all;clc;close all;
 
-for i = 1:6
-    str = ['error_data',num2str(i),'.txt'];
+% error_data = zeros(16,7);
+% for i = 1:16
+%     error_data(i,1) = i;
+% end
+% 
+% for j = 1:6
+%     str = ['error_data',num2str(j),'.txt'];
+%     tmp = load(str);
+%     error_data(:,j+1) = tmp;
+% end
+% 
+% dlmwrite("errDate.txt",error_data,'delimiter',',','precision','%.2f');
+% 
+% T = readtable('errDate.txt')
+% 
+% x_order = {'Line1','Line2','Line3','Line4','Line5','Line6'};
+% x_lab = categorical(T.Var1,1:16,x_order);
+
+for j = 1:6
+    str = ['error_data',num2str(j),'.txt'];
     tmp = load(str);
-    error_data(:,i) = tmp;
+    error_data(:,j) = tmp;
 end
 
-boxchart(error_data,'BoxWidth',0.25,'LineWidth',1.5,'BoxFaceColor',[0 0.4470 0.7410],'MarkerStyle','+','MarkerColor','r');
+b = boxchart(error_data,'BoxWidth',0.25,'LineWidth',1.5,'BoxFaceColor',[0 0.4470 0.7410],'MarkerStyle','+','MarkerColor','r');
+
+
+%设置箱线图属性
+b.MarkerSize = 10;
+
+
 
 x_lab = {'Line1','Line2','Line3','Line4','Line5','Line6'};
 % boxplot(error_data,x_lab,'BoxStyle','outline','MedianStyle','line','Widths',0.5);
