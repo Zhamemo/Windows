@@ -1,64 +1,54 @@
 clear all;clc
 
-data = xmlread('point.xml','r');
+data = xmlread('Homography.xml','r');
+
+ for i = 1:21
+    str = "n_img" + num2str(i-1);
+    point_array = data.getElementsByTagName(str);
+    Matri = char(point_array.item(0).getTextContent());
+
+    % point = strsplit(point,' ');
+    homography(:,:,i) = str2num(char(Matri));
+ end
  
-point_array = data.getElementsByTagName('point');
-point = char(point_array.item(0).getTextContent());
+fid = fopen('imgPoints.txt');
 
-point = strsplit(point,' ');
-Point = str2num(char(point));
-
-sta = 1;
-for i = 1:88
-    Point3D(i,1:3) = Point(sta:sta+2,:);
-    sta = sta + 3;
-end
-Point3D(:,4) = 1;
-
-data1 = xmlread('Transform.xml','r');
-
-Rvec_array = data1.getElementsByTagName('Rvec');
-Rvec = char(Rvec_array.item(0).getTextContent());
-
-Rvec = strsplit(Rvec,' ');
-rvec = str2num(char(Rvec));
-
-sta = 1;
-for i = 1:3
-    ro(i,1:3) = rvec(sta:sta+2,:);
-    sta = sta + 3;
-end
-
-tvec_array = data1.getElementsByTagName('tvec');
-tvec = char(tvec_array.item(0).getTextContent());
-
-tvec = strsplit(tvec,' ');
-t = str2num(char(tvec));
-
-tr = zeros(4,4);
-tr(1:3,1:3) = ro;
-tr(1:3,4) = t;
-tr(4,4) = 1;
-
-for j = 1:88
-    pt(j,:) = tr \ Point3D(j,:)';
-end
-
-point3d(:,1) = pt(:,3);
-point3d(:,2) = pt(:,1);
-point3d(:,3) = pt(:,2);
-
-n = 1;
-st = 1;
-for h = 1:11
-    for j = 1:8
-        P3D(n,:) = point3d(st,:);
-        st = st+11;
-        n = n + 1;
+flag = 0;
+r = 1;
+i = 1;
+j = 0;
+while 1
+    tline = fgetl(fid);
+    if ~ischar(tline)   
+        break
     end
-    st = h + 1;
+    
+%     disp(tline)
+    t = str2num(tline);
+    
+    if isempty(t)
+        flag = flag + 1;
+        continue;
+    end
+    
+    if flag == 0
+        r = r + 1;
+        imgPoints(r,:,i,j) = t;
+    elseif flag == 1
+        r = 1;
+        i = i + 1;
+        imgPoints(r,:,i,j) = t;
+        flag = flag - 1;
+    else
+        r = 1;
+        i = 1;
+        j = j + 1;
+        imgPoints(r,:,i,j) = t; 
+        flag = flag - 2;
+    end
+        
+    
+    
 end
-
-data = P3D(9:80,:);
-
-
+fclose(fid);
+ 
