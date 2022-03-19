@@ -1,4 +1,4 @@
-function [H,Hnorm,inv_Hnorm] = compute_homography(m,M);
+function [H,Hnorm,inv_Hnorm] = compute_homography(m,M)
 
 %compute_homography
 %
@@ -37,14 +37,13 @@ function [H,Hnorm,inv_Hnorm] = compute_homography(m,M);
 
 Np = size(m,2);
 
-if size(m,1)<3,
+if size(m,1)<3
    m = [m;ones(1,Np)];
-end;
+end
 
-if size(M,1)<3,
+if size(M,1)<3
    M = [M;ones(1,Np)];
-end;
-
+end
 
 m = m ./ (ones(3,1)*m(3,:));
 M = M ./ (ones(3,1)*M(3,:));
@@ -80,9 +79,9 @@ L(2:2:2*Np,4:6) = M';
 L(1:2:2*Np,7:9) = -((ones(3,1)*mn(1,:)).* M)';
 L(2:2:2*Np,7:9) = -((ones(3,1)*mn(2,:)).* M)';
 
-if Np > 4,
+if Np > 4
 	L = L'*L;
-end;
+end
 
 [U,S,V] = svd(L);
 
@@ -97,25 +96,23 @@ Hrem = reshape(hh,3,3)';
 
 H = inv_Hnorm*Hrem;
 
-if 0,
+if 0
    m2 = H*M;
    m2 = [m2(1,:)./m2(3,:) ; m2(2,:)./m2(3,:)];
    merr = m(1:2,:) - m2;
-end;
+end
 
 %keyboard;
  
 %%% Homography refinement if there are more than 4 points:
 
-if Np > 4,
+if Np > 4
    
    % Final refinement:
    hhv = reshape(H',9,1);
    hhv = hhv(1:8);
    
-   for iter=1:10,
-      
-
+   for iter=1:10
    
 		mrep = H * M;
 
@@ -151,16 +148,16 @@ if Np > 4,
 		hhv = hhv_up;
       H = H_up;
       
-   end;
+   end
    
 
-end;
+end
 
-if 0,
+if 0
    m2 = H*M;
    m2 = [m2(1,:)./m2(3,:) ; m2(2,:)./m2(3,:)];
    merr = m(1:2,:) - m2;
-end;
+end
 
 return;
 
