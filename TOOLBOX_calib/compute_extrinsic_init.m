@@ -177,6 +177,7 @@ else
 
    % Computes an initial guess for extrinsic parameters (works for general 3d structure, not planar!!!):
    % The DLT method is applied here!!
+   % T = [t1 t4 t7 t10; t2 t5 t8 t11; t3 t6 t9 t12];
    
    J = zeros(2*Np,12);
 	
